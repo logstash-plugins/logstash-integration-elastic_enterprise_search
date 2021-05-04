@@ -1,0 +1,29 @@
+:plugin: elastic_enterprise_search
+:type: integration
+:no_codec:
+
+///////////////////////////////////////////
+START - GENERATED VARIABLES, DO NOT EDIT!
+///////////////////////////////////////////
+:version: %VERSION%
+:release_date: %RELEASE_DATE%
+:changelog_url: %CHANGELOG_URL%
+:include_path: ../../../../logstash/docs/include
+///////////////////////////////////////////
+END - GENERATED VARIABLES, DO NOT EDIT!
+///////////////////////////////////////////
+
+[id="plugins-{type}s-{plugin}"]
+
+=== Elastic EnterpriseSearch Integration Plugin
+
+include::{include_path}/plugin_header.asciidoc[]
+
+==== Description
+
+The Elastic EnterpriseSearch Integration Plugin provides integrated plugins for working with
+AppSearch service:
+
+- {logstash-ref}/plugins-outputs-elastic_app_search.html[AppSearch Output Plugin]
+
+:no_codec!:
