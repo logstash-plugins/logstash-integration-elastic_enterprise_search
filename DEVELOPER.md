@@ -2,4 +2,4 @@
 Elastic Enterprise Search integration for Logstash, including AppSearch and WorkplaceSearch output plugins
 
 # Dependencies
-TODO
+ * elastic-app-search
