@@ -15,7 +15,7 @@ END - GENERATED VARIABLES, DO NOT EDIT!
 
 [id="plugins-{type}s-{plugin}"]
 
-=== Elastic EnterpriseSearch Integration Plugin
+=== Elastic Enterprise Search integration plugin
 
 include::{include_path}/plugin_header.asciidoc[]
 
