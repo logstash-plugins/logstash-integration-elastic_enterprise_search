@@ -15,7 +15,7 @@ END - GENERATED VARIABLES, DO NOT EDIT!
 
 [id="plugins-{type}s-{plugin}"]
 
-=== App Search output plugin
+=== Elastic App Search output plugin
 
 include::{include_path}/plugin_header.asciidoc[]
 
