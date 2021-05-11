@@ -1,6 +1,5 @@
 #!/bin/bash
 function wait_for_appsearch {
-  local APPSEARCH_URL=${APPSEARCH_URL:-"http://appsearch:3002"}
   local continue=1
   set +e
   while [ $continue -gt 0 ]; do
@@ -13,12 +12,13 @@ function wait_for_appsearch {
 }
 
 function load_api_keys {
-  local APPSEARCH_USERNAME=${APPSEARCH_USERNAME:-"enterprise_search"}
-  local AS_PASSWORD=${AS_PASSWORD:-"password"}
-  local APPSEARCH_URL=${APPSEARCH_URL:-"http://appsearch:3002"}
   local SEARCH_URL="${APPSEARCH_URL}/as/credentials/collection?page%5Bcurrent%5D=1"
   echo $(curl -u${APPSEARCH_USERNAME}:${AS_PASSWORD} -s ${SEARCH_URL} | sed -E "s/.*(${1}-[[:alnum:]]{24}).*/\1/")
 }
+
+export APPSEARCH_USERNAME=${APPSEARCH_USERNAME:-"enterprise_search"}
+export AS_PASSWORD=${AS_PASSWORD:-"password"}
+export APPSEARCH_URL=${APPSEARCH_URL:-"http://appsearch:3002"}
 
 wait_for_appsearch
 export APPSEARCH_URL=${APPSEARCH_URL:-"http://appsearch:3002"}
