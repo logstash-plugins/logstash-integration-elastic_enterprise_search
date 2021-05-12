@@ -20,7 +20,7 @@ Gem::Specification.new do |s|
   s.metadata = {
       "logstash_plugin"     => "true",
       "logstash_group"      => "integration",
-      "integration_plugins" => "logstash-output-elastic_app_search"
+      "integration_plugins" => "logstash-output-elastic_app_search, logstash-output-elastic_workplace_search"
   }
 
   # Gem dependencies
