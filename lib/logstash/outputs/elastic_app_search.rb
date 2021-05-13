@@ -5,12 +5,44 @@ require "elastic-app-search"
 class LogStash::Outputs::ElasticAppSearch < LogStash::Outputs::Base
   config_name "elastic_app_search"
 
+  # The name of the search engine you created in App Search, an information
+  # repository that includes the indexed document records.
+  # The `engine` field supports
+  # {logstash-ref}/event-dependent-configuration.html#sprintf[sprintf format] to
+  # allow the engine name to be derived from a field value from each event, for
+  # example `engine-%{engine_name}`.
+  #
+  # Invalid engine names cause ingestion to stop until the field value can be resolved into a valid engine name.
+  # This situation can happen if the interpolated field value resolves to a value without a matching engine,
+  # or, if the field is missing from the event and cannot be resolved at all.
   config :engine, :validate => :string, :required => true
+
+  # The hostname of the App Search API that is associated with your App Search account.
+  # Set this when using the https://www.elastic.co/cloud/app-search-service
   config :host, :validate => :string
+
+  # The value of the API endpoint in the form of a URL. Note: The value of the of the `path` setting will be will be appended to this URL.
+  # Set this when using the https://www.elastic.co/downloads/app-search
   config :url, :validate => :string
+
+  # The private API Key with write permissions. Visit the https://app.swiftype.com/as/credentials
+  # in the App Search dashboard to find the key associated with your account.
   config :api_key, :validate => :password, :required => true
+
+  # Where to move the value from the `@timestamp` field.
+  #
+  # All Logstash events contain a `@timestamp` field.
+  # App Search doesn't support fields starting with `@timestamp`, and
+  # by default, the `@timestamp` field will be deleted.
+  #
+  # To keep the timestamp field, set this value to the name of the field where you want `@timestamp` copied.
   config :timestamp_destination, :validate => :string
+
+  # The id for app search documents. This can be an interpolated value
+  # like `myapp-%{sequence_id}`. Reusing ids will cause documents to be rewritten.
   config :document_id, :validate => :string
+
+  # The path that is appended to the `url` parameter when connecting to a https://www.elastic.co/downloads/app-search
   config :path, :validate => :string, :default => "/api/as/v1/"
 
   ENGINE_WITH_SPRINTF_REGEX = /^.*%\{.+\}.*$/
