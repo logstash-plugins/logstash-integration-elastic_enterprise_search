@@ -1,3 +1,4 @@
+:integration: elastic_enterprise_search
 :plugin: elastic_app_search
 :type: output
 :no_codec:
@@ -17,7 +18,7 @@ END - GENERATED VARIABLES, DO NOT EDIT!
 
 === Elastic App Search output plugin
 
-include::{include_path}/plugin_header.asciidoc[]
+include::{include_path}/plugin_header-integration.asciidoc[]
 
 ==== Description
 
@@ -38,7 +39,7 @@ to store the timestamp in a different field.
 NOTE: This gem does not support codec customization.
 
 [id="plugins-{type}s-{plugin}-options"]
-==== AppSearch Output Configuration Options
+==== AppSearch Output configuration options
 
 This plugin supports the following configuration options plus the
 <<plugins-{type}s-{plugin}-common-options>> described later.
