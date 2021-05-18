@@ -1,0 +1,1 @@
+{"name":"logstash-integration-elastic_enterprise_search","plugins":["logstash-output-elastic_app_search","logstash-output-elastic_workplace_search"]}

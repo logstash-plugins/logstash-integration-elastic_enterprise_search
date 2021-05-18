@@ -1,6 +1,6 @@
 Gem::Specification.new do |s|
   s.name          = 'logstash-integration-elastic_enterprise_search'
-  s.version         = '2.0.0'
+  s.version         = '2.1.0'
   s.licenses        = ['Apache-2.0']
   s.summary         = "Integration with Elastic Enterprise Search - output plugins"
   s.description     = "This gem is a Logstash plugin required to be installed on top of the Logstash core pipeline "+
@@ -20,12 +20,13 @@ Gem::Specification.new do |s|
   s.metadata = {
       "logstash_plugin"     => "true",
       "logstash_group"      => "integration",
-      "integration_plugins" => "logstash-output-elastic_app_search"
+      "integration_plugins" => "logstash-output-elastic_app_search, logstash-output-elastic_workplace_search"
   }
 
   # Gem dependencies
   s.add_runtime_dependency "logstash-core-plugin-api", "~> 2.0"
   s.add_runtime_dependency "logstash-codec-plain"
   s.add_runtime_dependency "elastic-app-search", '~>7.8.0'
+  s.add_runtime_dependency "elastic-workplace-search", '~>0.4.1'
   s.add_development_dependency "logstash-devutils"
 end
