@@ -3,3 +3,4 @@ Elastic Enterprise Search integration for Logstash, including AppSearch and Work
 
 # Dependencies
  * elastic-app-search
+ * elastic-workplace-search
