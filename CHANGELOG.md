@@ -1,6 +1,10 @@
+## 2.1.1
+- [DOC] Added the integration attribute and include statement for the integration plugin header to finalize hooking up integration docs [#8](https://github.com/logstash-plugins/logstash-integration-elastic_enterprise_search/pull/8)
+- [DOC] Added live link to output-elastic_workplace_search doc [#6](https://github.com/logstash-plugins/logstash-integration-elastic_enterprise_search/pull/6)
+
 ## 2.1.0
 - Addition of Workplace Search Output plugin [#4](https://github.com/logstash-plugins/logstash-integration-elastic_enterprise_search/pull/4)
-- [DOC] Updates output-elastic_app_search documentation to add an integration attribute and include the integration plugin header [#5](https://github.com/logstash-plugins/logstash-integration-elastic_enterprise_search/pull/5)
+- [DOC] Added the integration attribute and include statement for the integration plugin header to output-elastic_app_search doc [#5](https://github.com/logstash-plugins/logstash-integration-elastic_enterprise_search/pull/5)
 
 
 ## 2.0.0
