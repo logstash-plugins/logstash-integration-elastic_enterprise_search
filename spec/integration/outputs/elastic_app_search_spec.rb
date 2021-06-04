@@ -5,7 +5,7 @@ require "logstash/codecs/plain"
 require "logstash/event"
 require "json"
 
-describe "indexing against running AppSearch", :integration => true do
+describe "indexing against running App Search", :integration => true do
 
   let(:engine_name) do
     (0...10).map { ('a'..'z').to_a[rand(26)] }.join
