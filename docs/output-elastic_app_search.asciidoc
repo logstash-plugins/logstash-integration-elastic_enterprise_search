@@ -22,7 +22,7 @@ include::{include_path}/plugin_header-integration.asciidoc[]
 
 ==== Description
 
-This output lets you send events to the Elastic App Search solution,
+This output lets you send events to the https://www.elastic.co/app-search[Elastic App Search] solution,
 both the https://www.elastic.co/downloads/app-search[self-managed] or
 the https://www.elastic.co/cloud/app-search-service[managed] service.
 On receiving a batch of events from the Logstash pipeline, the plugin
