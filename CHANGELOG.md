@@ -1,5 +1,6 @@
-## x.y.z
-- Fix typos in App Search and Workplace Search[#9](https://github.com/logstash-plugins/logstash-integration-elastic_enterprise_search/pull/9) 
+## 2.1.2
+- [DOC] Fix typos in App Search and Workplace Search [#9](https://github.com/logstash-plugins/logstash-integration-elastic_enterprise_search/pull/9)
+- [DOC] Add links to Elastic App Search and Elastic Workplace Search solution pages [#10](https://github.com/logstash-plugins/logstash-integration-elastic_enterprise_search/pull/9) 
 
 ## 2.1.1
 - [DOC] Added the integration attribute and include statement for the integration plugin header to finalize hooking up integration docs [#8](https://github.com/logstash-plugins/logstash-integration-elastic_enterprise_search/pull/8)

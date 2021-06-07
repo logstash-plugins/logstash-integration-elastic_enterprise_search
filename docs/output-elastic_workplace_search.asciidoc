@@ -22,7 +22,7 @@ include::{include_path}/plugin_header-integration.asciidoc[]
 
 ==== Description
 
-This output lets you send events to the Elastic Workplace Search solution.
+This output lets you send events to the https://www.elastic.co/workplace-search[Elastic Workplace Search] solution.
 On receiving a batch of events from the Logstash pipeline, the plugin
 converts the events into documents and uses the Workplace Search bulk API
 to index multiple events in one request.
