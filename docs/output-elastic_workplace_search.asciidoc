@@ -116,6 +116,8 @@ filter {
 output {
   elastic_workplace_search {
     source => "%{[source_id]}"
+    access_token => "abracadabra"
+    url => "http://workplace.search.com:3002"
   }
 }
 ----------------------------------
@@ -140,7 +142,8 @@ To keep the timestamp field, set this value to the name of the field where you w
 * Value type is <<string,string>>
 * There is no default value
 
-The value of the API endpoint in the form of a URL.
+The value of the API endpoint in the form of a URL. It could be an on-premise instance like "http://workplace.company.com:3002",
+or an Elastic cloud instance, for example "https://7c455f508468426cb53912be65548117.ent-search.eu-west-1.aws.cloud.es.io"
 
 [id="plugins-{type}s-{plugin}-common-options"]
 include::{include_path}/{type}.asciidoc[]

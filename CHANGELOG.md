@@ -1,3 +1,6 @@
+## Unreleased
+ -[DOC] Added required parameters to Workplace Search example snippet and describe little better what's expected in url parameter [#11](https://github.com/logstash-plugins/logstash-integration-elastic_enterprise_search/pull/11)
+
 ## 2.1.2
 - [DOC] Fix typos in App Search and Workplace Search [#9](https://github.com/logstash-plugins/logstash-integration-elastic_enterprise_search/pull/9)
 - [DOC] Add links to Elastic App Search and Elastic Workplace Search solution pages [#10](https://github.com/logstash-plugins/logstash-integration-elastic_enterprise_search/pull/9) 
