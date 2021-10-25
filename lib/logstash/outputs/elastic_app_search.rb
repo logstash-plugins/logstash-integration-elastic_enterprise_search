@@ -1,6 +1,6 @@
 # encoding: utf-8
 require "logstash/outputs/base"
-require "elastic-app-search"
+require "elastic-enterprise-search"
 
 class LogStash::Outputs::ElasticAppSearch < LogStash::Outputs::Base
   config_name "elastic_app_search"
@@ -56,9 +56,9 @@ class LogStash::Outputs::ElasticAppSearch < LogStash::Outputs::Base
     elsif @host && path_is_set?  # because path has a default value we need extra work to if the user set it
       raise ::LogStash::ConfigurationError.new("The setting \"path\" is not compatible with \"host\". Use \"path\" only with \"url\".")
     elsif @host
-      @client = Elastic::AppSearch::Client.new(:host_identifier => @host, :api_key => @api_key.value)
+      @client = Elastic::EnterpriseSearch::AppSearch::Client.new(:host_identifier => @host, :api_key => @api_key.value)
     elsif @url
-      @client = Elastic::AppSearch::Client.new(:api_endpoint => @url + @path, :api_key => @api_key.value)
+      @client = Elastic::EnterpriseSearch::AppSearch::Client.new(:api_endpoint => @url + @path, :api_key => @api_key.value)
     end
     check_connection! unless @engine =~ ENGINE_WITH_SPRINTF_REGEX
   rescue => e
