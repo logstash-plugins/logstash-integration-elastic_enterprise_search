@@ -56,9 +56,10 @@ class LogStash::Outputs::ElasticAppSearch < LogStash::Outputs::Base
     elsif @host && path_is_set?  # because path has a default value we need extra work to if the user set it
       raise ::LogStash::ConfigurationError.new("The setting \"path\" is not compatible with \"host\". Use \"path\" only with \"url\".")
     elsif @host
+      #TODO remove this branch `host` doesn't have any meaning in the context of the new client
       @client = Elastic::EnterpriseSearch::AppSearch::Client.new(:host_identifier => @host, :api_key => @api_key.value)
     elsif @url
-      @client = Elastic::EnterpriseSearch::AppSearch::Client.new(:api_endpoint => @url + @path, :api_key => @api_key.value)
+      @client = Elastic::EnterpriseSearch::AppSearch::Client.new(:host => @url, :http_auth => @api_key.value, :external_url => @url)
     end
     check_connection! unless @engine =~ ENGINE_WITH_SPRINTF_REGEX
   rescue => e
@@ -117,11 +118,11 @@ class LogStash::Outputs::ElasticAppSearch < LogStash::Outputs::Base
         if resolved_engine =~ ENGINE_WITH_SPRINTF_REGEX || resolved_engine =~ /^\s*$/
           raise "Cannot resolve engine field name #{@engine} from event"
         end
-        response = @client.index_documents(resolved_engine, documents)
+        response = @client.index_documents(resolved_engine, {:documents => documents})
         report(documents, response)
       rescue => e
         @logger.error("Failed to execute index operation. Retrying..", :exception => e.class, :reason => e.message,
-                      :resolved_engine => resolved_engine)
+                      :resolved_engine => resolved_engine, :backtrace => e.backtrace)
         sleep(1)
         retry
       end
@@ -140,7 +141,7 @@ class LogStash::Outputs::ElasticAppSearch < LogStash::Outputs::Base
   end
 
   def check_connection!
-    @client.get_engine(@engine)
+    @client.stats
   end
 
   def path_is_set?
