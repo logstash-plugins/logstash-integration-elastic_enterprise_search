@@ -131,7 +131,7 @@ class LogStash::Outputs::ElasticAppSearch < LogStash::Outputs::Base
 
   def report(documents, response)
     documents.each_with_index do |document, i|
-      errors = response[i]["errors"]
+      errors = response.body[i]["errors"]
       if errors.empty?
         @logger.trace? && @logger.trace("Document was indexed with no errors", :document => document)
       else
