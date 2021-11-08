@@ -141,7 +141,8 @@ class LogStash::Outputs::ElasticAppSearch < LogStash::Outputs::Base
   end
 
   def check_connection!
-    @client.stats
+    res = @client.list_engines({:page_size => 1})
+    raise "Received HTTP error code #{res.status}" unless res.status == 200
   end
 
   def path_is_set?

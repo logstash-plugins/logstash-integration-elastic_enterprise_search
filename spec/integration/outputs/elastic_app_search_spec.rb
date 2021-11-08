@@ -53,7 +53,7 @@ describe "indexing against running App Search", :integration => true do
       {
         "api_key" => ENV['APP_SEARCH_PRIVATE_KEY'],
         "engine" => "%{engine_name_field}",
-        "url" => "http://appsearch:3002"
+        "url" => "http://enterprise_search:3002"
       }
     end
 
