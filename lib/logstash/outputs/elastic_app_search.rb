@@ -1,5 +1,6 @@
 # encoding: utf-8
 require "logstash/outputs/base"
+require "elastic-app-search"
 require "elastic-enterprise-search"
 require 'logstash/plugin_mixins/deprecation_logger_support'
 
@@ -59,9 +60,8 @@ class LogStash::Outputs::ElasticAppSearch < LogStash::Outputs::Base
     elsif @host && path_is_set?  # because path has a default value we need extra work to if the user set it
       raise ::LogStash::ConfigurationError.new("The setting \"path\" is not compatible with \"host\". Use \"path\" only with \"url\".")
     elsif @host
-      #TODO remove this branch `host` doesn't have any meaning in the context of the new client
       @deprecation_logger.deprecated("Deprecated service usage, the `host` setting will be removed when Swiftype AppSearch service is shutdown")
-      @client = Elastic::EnterpriseSearch::AppSearch::Client.new(:host_identifier => @host, :api_key => @api_key.value)
+      @client = Elastic::AppSearch::Client.new(:host_identifier => @host, :api_key => @api_key.value)
     elsif @url
       @client = Elastic::EnterpriseSearch::AppSearch::Client.new(:host => @url, :http_auth => @api_key.value, :external_url => @url)
     end
@@ -122,7 +122,11 @@ class LogStash::Outputs::ElasticAppSearch < LogStash::Outputs::Base
         if resolved_engine =~ ENGINE_WITH_SPRINTF_REGEX || resolved_engine =~ /^\s*$/
           raise "Cannot resolve engine field name #{@engine} from event"
         end
-        response = @client.index_documents(resolved_engine, {:documents => documents})
+        if connected_to_swiftype?
+          response = @client.index_documents(resolved_engine, documents)
+        else
+          response = @client.index_documents(resolved_engine, {:documents => documents})
+        end
         report(documents, response)
       rescue => e
         @logger.error("Failed to execute index operation. Retrying..", :exception => e.class, :reason => e.message,
@@ -135,7 +139,11 @@ class LogStash::Outputs::ElasticAppSearch < LogStash::Outputs::Base
 
   def report(documents, response)
     documents.each_with_index do |document, i|
-      errors = response.body[i]["errors"]
+      if connected_to_swiftype?
+        errors = response[i]["errors"]
+      else
+        errors = response.body[i]["errors"]
+      end
       if errors.empty?
         @logger.trace? && @logger.trace("Document was indexed with no errors", :document => document)
       else
@@ -145,11 +153,19 @@ class LogStash::Outputs::ElasticAppSearch < LogStash::Outputs::Base
   end
 
   def check_connection!
-    res = @client.list_engines({:page_size => 1})
-    raise "Received HTTP error code #{res.status}" unless res.status == 200
+    if connected_to_swiftype?
+      @client.get_engine(@engine)
+    else
+      res = @client.list_engines({:page_size => 1})
+      raise "Received HTTP error code #{res.status}" unless res.status == 200
+    end
   end
 
   def path_is_set?
     original_params.key?("path")
+  end
+
+  def connected_to_swiftype?
+    !@host.nil?
   end
 end
