@@ -1,8 +1,11 @@
 # encoding: utf-8
 require "logstash/outputs/base"
 require "elastic-enterprise-search"
+require 'logstash/plugin_mixins/deprecation_logger_support'
 
 class LogStash::Outputs::ElasticAppSearch < LogStash::Outputs::Base
+  include LogStash::PluginMixins::DeprecationLoggerSupport
+
   config_name "elastic_app_search"
 
   # The name of the search engine you created in App Search, an information
@@ -57,6 +60,7 @@ class LogStash::Outputs::ElasticAppSearch < LogStash::Outputs::Base
       raise ::LogStash::ConfigurationError.new("The setting \"path\" is not compatible with \"host\". Use \"path\" only with \"url\".")
     elsif @host
       #TODO remove this branch `host` doesn't have any meaning in the context of the new client
+      @deprecation_logger.deprecated("Deprecated service usage, the `host` setting will be removed when Swiftype AppSearch service is shutdown")
       @client = Elastic::EnterpriseSearch::AppSearch::Client.new(:host_identifier => @host, :api_key => @api_key.value)
     elsif @url
       @client = Elastic::EnterpriseSearch::AppSearch::Client.new(:host => @url, :http_auth => @api_key.value, :external_url => @url)
