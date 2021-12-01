@@ -52,7 +52,7 @@ class LogStash::Outputs::ElasticAppSearch < LogStash::Outputs::Base
     if @host.nil? && @url.nil?
       raise ::LogStash::ConfigurationError.new("Please specify either \"url\" (for self-managed) or \"host\" (for SaaS).")
     elsif @host && @url
-      raise ::LogStash::ConfigurationError.new("Both \"url\" or \"host\" can't be set simultaneously. Please specify either \"url\" (for self-managed) or \"host\" (for SaaS).")
+      raise ::LogStash::ConfigurationError.new("Both \"url\" or \"host\" can't be set simultaneously. Please specify either \"url\" (for self-managed ot Elastic Enterprise Search) or \"host\" (for SaaS).")
     elsif @host && path_is_set?  # because path has a default value we need extra work to if the user set it
       raise ::LogStash::ConfigurationError.new("The setting \"path\" is not compatible with \"host\". Use \"path\" only with \"url\".")
     elsif @host
