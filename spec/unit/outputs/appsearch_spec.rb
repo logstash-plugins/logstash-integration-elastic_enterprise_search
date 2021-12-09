@@ -27,6 +27,14 @@ describe LogStash::Outputs::ElasticAppSearch do
         expect(client.class).to eq(Elastic::AppSearch::Client)
       end
     end
+    context "when path is configured" do
+      let(:config) { { "api_key" => api_key, "engine" => engine, "path" => "/v1", "url" => "http://localhost:9300" } }
+      it "configures the Swiftype client" do
+        subject.register
+        client = subject.instance_variable_get(:@client)
+        expect(client.class).to eq(Elastic::AppSearch::Client)
+      end
+    end
     context "when host and path is configured" do
       let(:config) { { "host" => host, "api_key" => api_key, "engine" => engine, "path" => "/v1" } }
       it "raises an error" do

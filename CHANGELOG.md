@@ -1,5 +1,6 @@
-## Unreleased
- -[DOC] Added required parameters to Workplace Search example snippet and describe little better what's expected in url parameter [#11](https://github.com/logstash-plugins/logstash-integration-elastic_enterprise_search/pull/11)
+## 2.2.0
+- Feature, switch the connection library to elastic-enterprise-search [#3](https://github.com/logstash-plugins/logstash-integration-elastic_enterprise_search/pull/3)
+- [DOC] Added required parameters to Workplace Search example snippet and describe little better what's expected in url parameter [#11](https://github.com/logstash-plugins/logstash-integration-elastic_enterprise_search/pull/11)
 
 ## 2.1.2
 - [DOC] Fix typos in App Search and Workplace Search [#9](https://github.com/logstash-plugins/logstash-integration-elastic_enterprise_search/pull/9)

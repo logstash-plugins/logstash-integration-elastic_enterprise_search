@@ -53,6 +53,7 @@ class LogStash::Outputs::ElasticAppSearch < LogStash::Outputs::Base
 
   public
   def register
+    @use_old_client = false
     if @host.nil? && @url.nil?
       raise ::LogStash::ConfigurationError.new("Please specify either \"url\" (for self-managed) or \"host\" (for SaaS).")
     elsif @host && @url
@@ -61,9 +62,16 @@ class LogStash::Outputs::ElasticAppSearch < LogStash::Outputs::Base
       raise ::LogStash::ConfigurationError.new("The setting \"path\" is not compatible with \"host\". Use \"path\" only with \"url\".")
     elsif @host
       @deprecation_logger.deprecated("Deprecated service usage, the `host` setting will be removed when Swiftype AppSearch service is shutdown")
+      @use_old_client = true
       @client = Elastic::AppSearch::Client.new(:host_identifier => @host, :api_key => @api_key.value)
     elsif @url
-      @client = Elastic::EnterpriseSearch::AppSearch::Client.new(:host => @url, :http_auth => @api_key.value, :external_url => @url)
+      if path_is_set?
+        @deprecation_logger.deprecated("Deprecated service usage, the `path` setting will be removed when Swiftype AppSearch service is shutdown")
+        @use_old_client = true
+        @client = Elastic::AppSearch::Client.new(:api_endpoint => @url + @path, :api_key => @api_key.value)
+      else
+        @client = Elastic::EnterpriseSearch::AppSearch::Client.new(:host => @url, :http_auth => @api_key.value, :external_url => @url)
+      end
     end
     check_connection! unless @engine =~ ENGINE_WITH_SPRINTF_REGEX
   rescue => e
@@ -166,6 +174,6 @@ class LogStash::Outputs::ElasticAppSearch < LogStash::Outputs::Base
   end
 
   def connected_to_swiftype?
-    !@host.nil?
+    @use_old_client
   end
 end

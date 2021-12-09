@@ -119,7 +119,7 @@ filter {
 }
 
 output {
-  appsearch {
+  elastic_app_search {
     engine => "engine_%{[engine_name]}"
   }
 }
