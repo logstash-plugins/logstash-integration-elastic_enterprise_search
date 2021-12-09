@@ -131,8 +131,21 @@ output {
 * Value type is <<string,string>>
 * There is no default value
 
-The hostname of the App Search API that is associated with your App Search account.
+The hostname of the App Search SaaS API that is associated with your App Search account.
+This is used only by Swiftype App Search, and has the form of `host-1ab2cd`.
 Set this when using the https://www.elastic.co/cloud/app-search-service[Elastic App Search managed service].
+
+NOTE: This is valid only for Swiftype SaaS AppSearch accounts, could be removed in future versions.
+
+[source,ruby]
+----------------------------------
+output {
+  elastic_app_search {
+    api_key => "private-somethingsecrethere"
+    host => "host-1ab2cd"
+  }
+}
+----------------------------------
 
 [id="plugins-{type}s-{plugin}-path"]
 ===== `path`
@@ -141,6 +154,20 @@ Set this when using the https://www.elastic.co/cloud/app-search-service[Elastic 
 * Default value is `/api/as/v1/`
 
 The path that is appended to the `url` parameter when connecting to a https://www.elastic.co/downloads/app-search[self-managed Elastic App Search].
+The `path` is used only for Swiftype App Search API, if configured it needs the `host` refers to a Swiftype's AppSearch instance.
+
+NOTE: This is valid only for Swiftype SaaS AppSearch accounts, could be removed in future versions.
+
+[source,ruby]
+----------------------------------
+output {
+  elastic_app_search {
+    api_key => "private-somethingsecrethere"
+    url => "https://localhost:3002"
+    path => "/api"
+  }
+}
+----------------------------------
 
 [id="plugins-{type}s-{plugin}-timestamp_destination"]
 ===== `timestamp_destination`
