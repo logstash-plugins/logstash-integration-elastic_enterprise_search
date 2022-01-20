@@ -153,10 +153,11 @@ output {
 * Value type is <<string,string>>
 * Default value is `/api/as/v1/`
 
-The path that is appended to the `url` parameter when connecting to a https://www.elastic.co/downloads/app-search[self-managed Elastic App Search].
-The `path` is used only for Swiftype App Search API, if configured it needs the `host` refers to a Swiftype's AppSearch instance.
 
-NOTE: This is valid only for Swiftype SaaS AppSearch accounts, could be removed in future versions.
+The `path` setting is used only for Swiftype SaaS AppSearch and could be removed in future versions.
+If configured, it needs the `host` which refers to a Swiftype's AppSearch instance.
+
+Note: When connecting to a https://www.elastic.co/downloads/app-search[self-managed Elastic App Search] the path is appended to the `url` parameter.
 
 [source,ruby]
 ----------------------------------
