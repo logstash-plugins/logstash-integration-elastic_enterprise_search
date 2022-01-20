@@ -133,7 +133,7 @@ output {
 
 The hostname of the App Search SaaS API that is associated with your App Search account.
 This is used only by Swiftype App Search, and has the form of `host-1ab2cd`.
-Set this when using the https://www.elastic.co/cloud/app-search-service[Elastic App Search managed service].
+Set this when using the https://swiftype.com/documentation/app-search/getting-started [Swiftype App Search managed service].
 
 NOTE: This is valid only for Swiftype SaaS AppSearch accounts, could be removed in future versions.
 
