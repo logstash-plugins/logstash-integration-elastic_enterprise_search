@@ -27,7 +27,7 @@ Gem::Specification.new do |s|
   s.add_runtime_dependency "logstash-core-plugin-api", "~> 2.0"
   s.add_runtime_dependency "logstash-codec-plain"
   s.add_runtime_dependency "elastic-app-search", '~>7.8.0'
-  s.add_runtime_dependency "elastic-enterprise-search", '~>7.15.1'
+  s.add_runtime_dependency "elastic-enterprise-search", '~>7.16.0'
   s.add_runtime_dependency "elastic-workplace-search", '~>0.4.1'
   s.add_runtime_dependency "logstash-mixin-deprecation_logger_support", '~>1.0'
   s.add_development_dependency "logstash-devutils"
