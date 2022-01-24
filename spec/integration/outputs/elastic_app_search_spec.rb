@@ -13,16 +13,16 @@ describe "indexing against running App Search", :integration => true do
 
   let(:config) do
     {
-      "api_key" => ENV['APPSEARCH_PRIVATE_KEY'],
+      "api_key" => ENV['APP_SEARCH_PRIVATE_KEY'],
       "engine" => engine_name,
-      "url" => "http://appsearch:3002"
+      "url" => "http://enterprise_search:3002"
     }
   end
 
   subject(:app_search_output) { LogStash::Outputs::ElasticAppSearch.new(config) }
 
   before(:each) do
-    create_engine(engine_name, "http://appsearch:3002", ENV['APPSEARCH_PRIVATE_KEY'])
+    create_engine(engine_name, "http://enterprise_search:3002", ENV['APP_SEARCH_PRIVATE_KEY'])
   end
 
   private
@@ -37,8 +37,8 @@ describe "indexing against running App Search", :integration => true do
   describe "search and private keys are configured" do
     let(:api_key_settings) do
       {
-        :private => ENV['APPSEARCH_PRIVATE_KEY'],
-        :search => ENV['APPSEARCH_SEARCH_KEY']
+        :private => ENV['APP_SEARCH_PRIVATE_KEY'],
+        :search => ENV['APP_SEARCH_SEARCH_KEY']
       }
     end
 
@@ -51,9 +51,9 @@ describe "indexing against running App Search", :integration => true do
   describe "register" do
     let(:config) do
       {
-        "api_key" => ENV['APPSEARCH_PRIVATE_KEY'],
+        "api_key" => ENV['APP_SEARCH_PRIVATE_KEY'],
         "engine" => "%{engine_name_field}",
-        "url" => "http://appsearch:3002"
+        "url" => "http://enterprise_search:3002"
       }
     end
 
@@ -89,9 +89,9 @@ describe "indexing against running App Search", :integration => true do
       context "using sprintf-ed engine" do
         let(:config) do
           {
-            "api_key" => ENV['APPSEARCH_PRIVATE_KEY'],
+            "api_key" => ENV['APP_SEARCH_PRIVATE_KEY'],
             "engine" => "%{engine_name_field}",
-            "url" => "http://appsearch:3002"
+            "url" => "http://enterprise_search:3002"
           }
         end
 
@@ -134,15 +134,15 @@ describe "indexing against running App Search", :integration => true do
       context "multiple sprintf engines" do
         let(:config) do
           {
-            "api_key" => ENV['APPSEARCH_PRIVATE_KEY'],
+            "api_key" => ENV['APP_SEARCH_PRIVATE_KEY'],
             "engine" => "%{engine_name_field}",
-            "url" => "http://appsearch:3002"
+            "url" => "http://enterprise_search:3002"
           }
         end
 
         it "all should be indexed" do
-         create_engine('testengin1', "http://appsearch:3002", ENV['APPSEARCH_PRIVATE_KEY'])
-         create_engine('testengin2', "http://appsearch:3002", ENV['APPSEARCH_PRIVATE_KEY'])
+         create_engine('testengin1', "http://enterprise_search:3002", ENV['APP_SEARCH_PRIVATE_KEY'])
+         create_engine('testengin2', "http://enterprise_search:3002", ENV['APP_SEARCH_PRIVATE_KEY'])
          events = generate_events(100, 'testengin1')
          events += generate_events(100, 'testengin2')
          events.shuffle!

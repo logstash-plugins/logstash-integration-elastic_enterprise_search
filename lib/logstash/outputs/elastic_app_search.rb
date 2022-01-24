@@ -1,8 +1,12 @@
 # encoding: utf-8
 require "logstash/outputs/base"
 require "elastic-app-search"
+require "elastic-enterprise-search"
+require 'logstash/plugin_mixins/deprecation_logger_support'
 
 class LogStash::Outputs::ElasticAppSearch < LogStash::Outputs::Base
+  include LogStash::PluginMixins::DeprecationLoggerSupport
+
   config_name "elastic_app_search"
 
   # The name of the search engine you created in App Search, an information
@@ -49,16 +53,25 @@ class LogStash::Outputs::ElasticAppSearch < LogStash::Outputs::Base
 
   public
   def register
+    @use_old_client = false
     if @host.nil? && @url.nil?
       raise ::LogStash::ConfigurationError.new("Please specify either \"url\" (for self-managed) or \"host\" (for SaaS).")
     elsif @host && @url
-      raise ::LogStash::ConfigurationError.new("Both \"url\" or \"host\" can't be set simultaneously. Please specify either \"url\" (for self-managed) or \"host\" (for SaaS).")
+      raise ::LogStash::ConfigurationError.new("Both \"url\" or \"host\" can't be set simultaneously. Please specify either \"url\" (for self-managed ot Elastic Enterprise Search) or \"host\" (for SaaS).")
     elsif @host && path_is_set?  # because path has a default value we need extra work to if the user set it
       raise ::LogStash::ConfigurationError.new("The setting \"path\" is not compatible with \"host\". Use \"path\" only with \"url\".")
     elsif @host
+      @deprecation_logger.deprecated("Deprecated service usage, the `host` setting will be removed when Swiftype AppSearch service is shutdown")
+      @use_old_client = true
       @client = Elastic::AppSearch::Client.new(:host_identifier => @host, :api_key => @api_key.value)
     elsif @url
-      @client = Elastic::AppSearch::Client.new(:api_endpoint => @url + @path, :api_key => @api_key.value)
+      if path_is_set?
+        @deprecation_logger.deprecated("Deprecated service usage, the `path` setting will be removed when Swiftype AppSearch service is shutdown")
+        @use_old_client = true
+        @client = Elastic::AppSearch::Client.new(:api_endpoint => @url + @path, :api_key => @api_key.value)
+      else
+        @client = Elastic::EnterpriseSearch::AppSearch::Client.new(:host => @url, :http_auth => @api_key.value, :external_url => @url)
+      end
     end
     check_connection! unless @engine =~ ENGINE_WITH_SPRINTF_REGEX
   rescue => e
@@ -117,11 +130,15 @@ class LogStash::Outputs::ElasticAppSearch < LogStash::Outputs::Base
         if resolved_engine =~ ENGINE_WITH_SPRINTF_REGEX || resolved_engine =~ /^\s*$/
           raise "Cannot resolve engine field name #{@engine} from event"
         end
-        response = @client.index_documents(resolved_engine, documents)
+        if connected_to_swiftype?
+          response = @client.index_documents(resolved_engine, documents)
+        else
+          response = @client.index_documents(resolved_engine, {:documents => documents})
+        end
         report(documents, response)
       rescue => e
         @logger.error("Failed to execute index operation. Retrying..", :exception => e.class, :reason => e.message,
-                      :resolved_engine => resolved_engine)
+                      :resolved_engine => resolved_engine, :backtrace => e.backtrace)
         sleep(1)
         retry
       end
@@ -130,7 +147,11 @@ class LogStash::Outputs::ElasticAppSearch < LogStash::Outputs::Base
 
   def report(documents, response)
     documents.each_with_index do |document, i|
-      errors = response[i]["errors"]
+      if connected_to_swiftype?
+        errors = response[i]["errors"]
+      else
+        errors = response.body[i]["errors"]
+      end
       if errors.empty?
         @logger.trace? && @logger.trace("Document was indexed with no errors", :document => document)
       else
@@ -140,10 +161,19 @@ class LogStash::Outputs::ElasticAppSearch < LogStash::Outputs::Base
   end
 
   def check_connection!
-    @client.get_engine(@engine)
+    if connected_to_swiftype?
+      @client.get_engine(@engine)
+    else
+      res = @client.list_engines({:page_size => 1})
+      raise "Received HTTP error code #{res.status}" unless res.status == 200
+    end
   end
 
   def path_is_set?
     original_params.key?("path")
+  end
+
+  def connected_to_swiftype?
+    @use_old_client
   end
 end

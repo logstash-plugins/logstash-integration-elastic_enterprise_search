@@ -3,6 +3,7 @@ require "logstash/devutils/rspec/spec_helper"
 require "logstash/outputs/elastic_app_search"
 require "logstash/codecs/plain"
 require "logstash/event"
+require "elastic-app-search"
 
 describe LogStash::Outputs::ElasticAppSearch do
   let(:sample_event) { LogStash::Event.new }
@@ -19,6 +20,19 @@ describe LogStash::Outputs::ElasticAppSearch do
       let(:config) { { "host" => host, "api_key" => api_key, "engine" => engine } }
       it "does not raise an error" do
         expect { subject.register }.to_not raise_error
+      end
+      it "configures the Swiftype client" do
+        subject.register
+        client = subject.instance_variable_get(:@client)
+        expect(client.class).to eq(Elastic::AppSearch::Client)
+      end
+    end
+    context "when path is configured" do
+      let(:config) { { "api_key" => api_key, "engine" => engine, "path" => "/v1", "url" => "http://localhost:9300" } }
+      it "configures the Swiftype client" do
+        subject.register
+        client = subject.instance_variable_get(:@client)
+        expect(client.class).to eq(Elastic::AppSearch::Client)
       end
     end
     context "when host and path is configured" do

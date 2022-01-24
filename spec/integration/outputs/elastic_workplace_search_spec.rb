@@ -8,8 +8,8 @@ require "base64"
 
 describe "indexing against running Workplace Search", :integration => true do
 
-  let(:url) { ENV['APPSEARCH_URL'] }
-  let(:auth) { Base64.strict_encode64("#{ENV['APPSEARCH_USERNAME']}:#{ENV['AS_PASSWORD']}") }
+  let(:url) { ENV['ENTERPRISE_SEARCH_URL'] }
+  let(:auth) { Base64.strict_encode64("#{ENV['ENTERPRISE_SEARCH_USERNAME']}:#{ENV['ENTERPRISE_SEARCH_PASSWORD']}")}
   let(:source) do
     response = Faraday.post(
       "#{url}/ws/org/sources/form_create",
