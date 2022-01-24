@@ -101,6 +101,6 @@ class LogStash::Outputs::ElasticWorkplaceSearch < LogStash::Outputs::Base
   end
 
   def check_connection!
-    @client.list_all_permissions(@source)
+    @client.index_documents(@source, {:documents => []})
   end
 end
