@@ -18,6 +18,7 @@ describe "indexing against running Workplace Search", :integration => true do
       "Accept" => "application/json",
       "Authorization" => "Basic #{auth}"
     )
+    puts "DNADBG>> response body: #{response.body}"
     JSON.load(response.body)
   end
   let(:source_id) { source.fetch("id") }
