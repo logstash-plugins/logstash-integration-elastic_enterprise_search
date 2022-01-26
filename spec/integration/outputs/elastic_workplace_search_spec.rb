@@ -11,23 +11,35 @@ describe "indexing against running Workplace Search", :integration => true do
   let(:url) { ENV['ENTERPRISE_SEARCH_URL'] }
   let(:auth) { Base64.strict_encode64("#{ENV['ENTERPRISE_SEARCH_USERNAME']}:#{ENV['ENTERPRISE_SEARCH_PASSWORD']}")}
   let(:source) do
-    response = Faraday.post(
-      "#{url}/ws/org/sources/form_create",
-      JSON.dump("service_type" => "custom", "name" => "whatever"),
-      "Content-Type" => "application/json",
+    response = Faraday.get(
+      "#{url}/api/ws/v1/whoami",
+      {"get_token" => true},
+      {"Content-Type" => "application/json",
       "Accept" => "application/json",
-      "Authorization" => "Basic #{auth}"
+      "Authorization" => "Basic #{auth}"}
     )
-    puts "DNADBG>> response body: #{response.body}"
+    puts "DNADBG>> source response body: #{response.body}"
     JSON.load(response.body)
   end
-  let(:source_id) { source.fetch("id") }
+  let(:access_token) { source.fetch("access_token") }
+  let(:source_id) do
+    response = Faraday.post(
+          "#{url}/api/ws/v1/sources",
+           JSON.dump("service_type" => "custom", "name" => "whatever"),
+          {"Content-Type" => "application/json",
+          "Accept" => "application/json",
+          "Authorization" => "Bearer #{access_token}"}
+        )
+    puts "DNADBG>> source_id response body: #{response.body}"
+    source_response_json = JSON.load(response.body)
+    source_response_json.fetch("id")
+  end
 
   let(:config) do
     {
       "url" => url,
       "source" => source_id,
-      "access_token" => source.fetch("accessToken")
+      "access_token" => access_token
     }
   end
 
