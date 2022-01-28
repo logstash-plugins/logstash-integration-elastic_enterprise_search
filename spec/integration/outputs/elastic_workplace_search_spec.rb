@@ -61,7 +61,6 @@ describe "indexing against running Workplace Search", :integration => true do
           "Accept" => "application/json",
           "Authorization" => "Bearer #{access_token}"}
         )
-    puts "DBG>> source_id response body: #{response.body}"
     source_response_json = JSON.load(response.body)
     source_response_json.fetch("id")
   end
