@@ -101,6 +101,7 @@ class LogStash::Outputs::ElasticWorkplaceSearch < LogStash::Outputs::Base
   end
 
   def check_connection!
-    @client.list_all_permissions(@source)
+    # This is the preferred way to check compatibility across different versions of Workplace Search service.
+    @client.index_documents(@source, {:documents => []})
   end
 end

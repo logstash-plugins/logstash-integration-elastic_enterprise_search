@@ -8,25 +8,68 @@ require "base64"
 
 describe "indexing against running Workplace Search", :integration => true do
 
+  def is_version7?
+    ENV['ELASTIC_STACK_VERSION'].strip.start_with?("7")
+  end
+
   let(:url) { ENV['ENTERPRISE_SEARCH_URL'] }
   let(:auth) { Base64.strict_encode64("#{ENV['ENTERPRISE_SEARCH_USERNAME']}:#{ENV['ENTERPRISE_SEARCH_PASSWORD']}")}
   let(:source) do
-    response = Faraday.post(
-      "#{url}/ws/org/sources/form_create",
-      JSON.dump("service_type" => "custom", "name" => "whatever"),
-      "Content-Type" => "application/json",
-      "Accept" => "application/json",
-      "Authorization" => "Basic #{auth}"
-    )
-    JSON.load(response.body)
+    if is_version7?
+      response = Faraday.get(
+        "#{url}/api/ws/v1/whoami",
+        {"get_token" => true},
+        {"Content-Type" => "application/json",
+        "Accept" => "application/json",
+        "Authorization" => "Basic #{auth}"}
+      )
+      JSON.load(response.body)
+    else
+      # Workplace Search v8.0+ provides the api_tokens API to create or retrieve
+      # the key to be use as access_token
+      conn = Faraday.new(url: url)
+      conn.basic_auth(ENV['ENTERPRISE_SEARCH_USERNAME'], ENV['ENTERPRISE_SEARCH_PASSWORD'])
+      response = conn.post('/ws/org/api_tokens',
+                            '{"name":"ls-integration-test-key"}',
+                            {"Content-Type" => "application/json", "Accept" => "application/json"})
+      create_response_json = JSON.load(response.body)
+      if create_response_json.has_key?("errors") && create_response_json["errors"].include?("Name is already taken")
+        # when a key with the name already exists, retrieve it
+        response = conn.get('/ws/org/api_tokens', nil,  {"Content-Type" => "application/json", "Accept" => "application/json"})
+        retrieve_token_response_json = JSON.load(response.body)
+        response_json = retrieve_token_response_json["results"].find {|res| res["id"] == "ls-integration-test-key"}
+      else
+        response_json = create_response_json
+      end
+
+      conn.close
+      response_json
+    end
   end
-  let(:source_id) { source.fetch("id") }
+  let(:access_token) do
+    if is_version7?
+      source.fetch("access_token")
+    else
+      source.fetch("key")
+    end
+  end
+  let(:source_id) do
+    response = Faraday.post(
+          "#{url}/api/ws/v1/sources",
+           JSON.dump("service_type" => "custom", "name" => "whatever"),
+          {"Content-Type" => "application/json",
+          "Accept" => "application/json",
+          "Authorization" => "Bearer #{access_token}"}
+        )
+    source_response_json = JSON.load(response.body)
+    source_response_json.fetch("id")
+  end
 
   let(:config) do
     {
       "url" => url,
       "source" => source_id,
-      "access_token" => source.fetch("accessToken")
+      "access_token" => access_token
     }
   end
 
