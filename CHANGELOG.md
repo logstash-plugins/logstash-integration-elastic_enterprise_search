@@ -1,5 +1,5 @@
-## Unreleased
- - Fix, update integration tests interaction for Workplace Search v8.0+ []() 
+## 2.2.1
+ - Fix, change implementation of connectivity check method to be compatible with version `v8.0+` of Workplace Search [#16](https://github.com/logstash-plugins/logstash-integration-elastic_enterprise_search/pull/16) 
 
 ## 2.2.0
  - Feature, switch the connection library to elastic-enterprise-search [#3](https://github.com/logstash-plugins/logstash-integration-elastic_enterprise_search/pull/3)
