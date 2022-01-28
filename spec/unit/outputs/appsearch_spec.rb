@@ -5,7 +5,7 @@ require "logstash/codecs/plain"
 require "logstash/event"
 require "elastic-app-search"
 
-xdescribe LogStash::Outputs::ElasticAppSearch do
+describe LogStash::Outputs::ElasticAppSearch do
   let(:sample_event) { LogStash::Event.new }
   let(:host) { "test-host" }
   let(:api_key) { "my_key" }
