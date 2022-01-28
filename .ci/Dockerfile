@@ -8,6 +8,7 @@ COPY --chown=logstash:logstash *.gemspec VERSION* version* /usr/share/plugins/pl
 RUN cp /usr/share/logstash/logstash-core/versions-gem-copy.yml /usr/share/logstash/versions.yml
 ENV PATH="${PATH}:/usr/share/logstash/vendor/jruby/bin:/usr/share/logstash/jdk/bin"
 ENV LOGSTASH_SOURCE="1"
+ARG ELASTIC_STACK_VERSION
 ENV ELASTIC_STACK_VERSION=$ELASTIC_STACK_VERSION
 # DISTRIBUTION="default" (by default) or "oss"
 ARG DISTRIBUTION

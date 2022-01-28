@@ -8,20 +8,52 @@ require "base64"
 
 describe "indexing against running Workplace Search", :integration => true do
 
+  def is_version7?
+    ENV['ELASTIC_STACK_VERSION'].strip.start_with?("7")
+  end
+
   let(:url) { ENV['ENTERPRISE_SEARCH_URL'] }
   let(:auth) { Base64.strict_encode64("#{ENV['ENTERPRISE_SEARCH_USERNAME']}:#{ENV['ENTERPRISE_SEARCH_PASSWORD']}")}
   let(:source) do
-    response = Faraday.get(
-      "#{url}/api/ws/v1/whoami",
-      {"get_token" => true},
-      {"Content-Type" => "application/json",
-      "Accept" => "application/json",
-      "Authorization" => "Basic #{auth}"}
-    )
-    puts "DNADBG>> source response body: #{response.body}"
-    JSON.load(response.body)
+    if is_version7?
+      response = Faraday.get(
+        "#{url}/api/ws/v1/whoami",
+        {"get_token" => true},
+        {"Content-Type" => "application/json",
+        "Accept" => "application/json",
+        "Authorization" => "Basic #{auth}"}
+      )
+      JSON.load(response.body)
+    else
+      conn = Faraday.new(url: url)
+      conn.basic_auth(ENV['ENTERPRISE_SEARCH_USERNAME'], ENV['ENTERPRISE_SEARCH_PASSWORD'])
+      response2 = conn.post('/ws/org/api_tokens', '{"name":"ls-integration-test-key"}',  {"Content-Type" => "application/json", "Accept" => "application/json"})
+      response_json = JSON.load(response2.body)
+      puts "DBG>> api_tokens response body: #{response2.body}, response_json: #{response_json}"
+      if response_json.has_key?("errors")
+        puts "DBG>> api_tokens response_json has errors key"
+        if response_json["errors"].include?("Name is already taken")
+          puts "DBG>> api_tokens response_json.errors content has Name ...."
+          #'{"name":"ls-integration-test-key"}'
+          response = conn.get('/ws/org/api_tokens', nil,  {"Content-Type" => "application/json", "Accept" => "application/json"})
+          puts "DBG>> api_tokens retrieve existing response body: #{response.body}"
+          response_json2 = JSON.load(response.body)
+          response_json = response_json2["results"].find {|res| res["id"] == "ls-integration-test-key"}
+          puts "DBG>> api_tokens retrieve existing: #{response_json}"
+        end
+      end
+
+      conn.close
+      response_json
+    end
   end
-  let(:access_token) { source.fetch("access_token") }
+  let(:access_token) do
+    if is_version7?
+      source.fetch("access_token")
+    else
+      source.fetch("key")
+    end
+  end
   let(:source_id) do
     response = Faraday.post(
           "#{url}/api/ws/v1/sources",
@@ -30,7 +62,7 @@ describe "indexing against running Workplace Search", :integration => true do
           "Accept" => "application/json",
           "Authorization" => "Bearer #{access_token}"}
         )
-    puts "DNADBG>> source_id response body: #{response.body}"
+    puts "DBG>> source_id response body: #{response.body}"
     source_response_json = JSON.load(response.body)
     source_response_json.fetch("id")
   end
