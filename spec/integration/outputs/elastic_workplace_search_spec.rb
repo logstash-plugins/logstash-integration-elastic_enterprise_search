@@ -25,22 +25,21 @@ describe "indexing against running Workplace Search", :integration => true do
       )
       JSON.load(response.body)
     else
+      # Workplace Search v8.0+ provides the api_tokens API to create or retrieve
+      # the key to be use as access_token
       conn = Faraday.new(url: url)
       conn.basic_auth(ENV['ENTERPRISE_SEARCH_USERNAME'], ENV['ENTERPRISE_SEARCH_PASSWORD'])
-      response2 = conn.post('/ws/org/api_tokens', '{"name":"ls-integration-test-key"}',  {"Content-Type" => "application/json", "Accept" => "application/json"})
-      response_json = JSON.load(response2.body)
-      puts "DBG>> api_tokens response body: #{response2.body}, response_json: #{response_json}"
-      if response_json.has_key?("errors")
-        puts "DBG>> api_tokens response_json has errors key"
-        if response_json["errors"].include?("Name is already taken")
-          puts "DBG>> api_tokens response_json.errors content has Name ...."
-          #'{"name":"ls-integration-test-key"}'
-          response = conn.get('/ws/org/api_tokens', nil,  {"Content-Type" => "application/json", "Accept" => "application/json"})
-          puts "DBG>> api_tokens retrieve existing response body: #{response.body}"
-          response_json2 = JSON.load(response.body)
-          response_json = response_json2["results"].find {|res| res["id"] == "ls-integration-test-key"}
-          puts "DBG>> api_tokens retrieve existing: #{response_json}"
-        end
+      response = conn.post('/ws/org/api_tokens',
+                            '{"name":"ls-integration-test-key"}',
+                            {"Content-Type" => "application/json", "Accept" => "application/json"})
+      create_response_json = JSON.load(response.body)
+      if create_response_json.has_key?("errors") && create_response_json["errors"].include?("Name is already taken")
+        # when a key with the name already exists, retrieve it
+        response = conn.get('/ws/org/api_tokens', nil,  {"Content-Type" => "application/json", "Accept" => "application/json"})
+        retrieve_token_response_json = JSON.load(response.body)
+        response_json = retrieve_token_response_json["results"].find {|res| res["id"] == "ls-integration-test-key"}
+      else
+        response_json = create_response_json
       end
 
       conn.close
