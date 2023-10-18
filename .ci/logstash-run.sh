@@ -4,6 +4,13 @@
 set -ex
 
 export USER='logstash'
+
 source .ci/retrieve_app_search_credentials.sh
 
-bundle exec rspec spec && bundle exec rspec spec --tag integration
+if [[ "$SECURE_INTEGRATION" == "true" ]]; then
+  extra_tag_args=" --tag secure_integration:true"
+else
+  extra_tag_args="--tag ~secure_integration:true"
+fi
+
+bundle exec rspec --format=documentation spec/unit --tag ~integration:true --tag ~secure_integration:true && bundle exec rspec --format=documentation --tag integration $extra_tag_args spec/integration
