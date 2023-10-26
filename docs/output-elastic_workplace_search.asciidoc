@@ -225,7 +225,7 @@ To keep the timestamp field, set this value to the name of the field where you w
 ===== `url`
 
 * Value type is <<string,string>>
-* There is no default value
+* Default value is `http://localhost:3002`
 
 The value of the API endpoint in the form of a URL. 
 
