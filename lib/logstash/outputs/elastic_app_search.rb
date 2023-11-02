@@ -1,10 +1,9 @@
 # encoding: utf-8
 require 'logstash/outputs/base'
+require 'logstash/plugin_mixins/enterprise_search/ssl_configs'
+require 'logstash/plugin_mixins/enterprise_search/client'
 
 class LogStash::Outputs::ElasticAppSearch < LogStash::Outputs::Base
-
-  require 'logstash/plugin_mixins/enterprise_search/ssl_configs'
-  require 'logstash/plugin_mixins/enterprise_search/client'
 
   include LogStash::PluginMixins::EnterpriseSearch::SSLConfigs
 
