@@ -48,7 +48,7 @@ class LogStash::Outputs::ElasticWorkplaceSearch < LogStash::Outputs::Base
     begin
       check_connection!
     rescue => e
-      raise LogStash::ConfigurationError, "Failed to connect to Workplace Search. Error: #{e.message}"
+      raise ::LogStash::ConfigurationError, "Failed to connect to Workplace Search. Error: #{e.message}"
     end
   end
 

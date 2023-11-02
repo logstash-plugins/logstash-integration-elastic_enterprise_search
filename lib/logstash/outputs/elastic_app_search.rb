@@ -49,11 +49,11 @@ class LogStash::Outputs::ElasticAppSearch < LogStash::Outputs::Base
     check_connection!
   rescue => e
     if e.message =~ /401/
-      raise LogStash::ConfigurationError, "Failed to connect to App Search. Please check your credentials. Error: #{e.message}"
+      raise ::LogStash::ConfigurationError, "Failed to connect to App Search. Please check your credentials. Error: #{e.message}"
     elsif e.message =~ /404/
-      raise LogStash::ConfigurationError, "Failed to connect to App Search. Please check if url '#{@url}' is correct and you've created an engine with name '#{@engine}'. Error: #{e.message}"
+      raise ::LogStash::ConfigurationError, "Failed to connect to App Search. Please check if url '#{@url}' is correct and you've created an engine with name '#{@engine}'. Error: #{e.message}"
     else
-      raise LogStash::ConfigurationError, "Failed to connect to App Search. Error: #{e.message}"
+      raise ::LogStash::ConfigurationError, "Failed to connect to App Search. Error: #{e.message}"
     end
   end
 

@@ -59,12 +59,12 @@ module LogStash::PluginMixins::EnterpriseSearch
     def build_ssl_config
       ssl_certificate_authorities, ssl_truststore_path = params.values_at('ssl_certificate_authorities', 'ssl_truststore_path')
       if ssl_certificate_authorities && ssl_truststore_path
-        raise LogStash::ConfigurationError, 'Use either "ssl_certificate_authorities" or "ssl_truststore_path" when configuring the CA certificate'
+        raise ::LogStash::ConfigurationError, 'Use either "ssl_certificate_authorities" or "ssl_truststore_path" when configuring the CA certificate'
       end
 
       ssl_options = {}
       if ssl_certificate_authorities&.any?
-        raise LogStash::ConfigurationError, 'Multiple values on "ssl_certificate_authorities" are not supported by this plugin' if ssl_certificate_authorities.size > 1
+        raise ::LogStash::ConfigurationError, 'Multiple values on "ssl_certificate_authorities" are not supported by this plugin' if ssl_certificate_authorities.size > 1
 
         ssl_options[:ca_file] = ssl_certificate_authorities.first
       end
