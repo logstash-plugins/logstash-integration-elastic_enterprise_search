@@ -99,9 +99,7 @@ class LogStash::Outputs::ElasticWorkplaceSearch < LogStash::Outputs::Base
   def index(docs_partioned_by_source)
     docs_partioned_by_source.each do |resolved_source, documents|
       begin
-        if resolved_source =~ SOURCE_WITH_SPRINTF_REGEX || resolved_source =~ /^\s*$/
-          raise "Cannot resolve source field name #{@source} from event"
-        end
+        raise "Cannot resolve source field name #{@source} from event" unless resolved?(resolved_source)
 
         response = @client.index_documents(resolved_source, { :documents => documents })
         report(documents, response)
@@ -115,6 +113,10 @@ class LogStash::Outputs::ElasticWorkplaceSearch < LogStash::Outputs::Base
         retry
       end
     end
+  end
+
+  def resolved?(source)
+    !(source =~ SOURCE_WITH_SPRINTF_REGEX) && !(source =~ /^\s*$/)
   end
 
   def report(documents, response)
