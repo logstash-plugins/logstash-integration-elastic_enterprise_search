@@ -1,7 +1,7 @@
 require 'elastic-enterprise-search'
+require 'logstash/plugin_mixins/enterprise_search/manticore_transport'
 
 module LogStash::PluginMixins::EnterpriseSearch
-  require 'logstash/plugin_mixins/enterprise_search/manticore_transport'
 
   module AppSearch
     # App Search client for Enterprise Search.
@@ -19,8 +19,6 @@ module LogStash::PluginMixins::EnterpriseSearch
   end
 
   module WorkplaceSearch
-    require 'logstash/plugin_mixins/enterprise_search/manticore_transport'
-
     # Workplace Search client for Enterprise Search.
     # This client extends Elastic::EnterpriseSearch::WorkplaceSearch::Client but overrides #transport to use Manticore.
     class Client < Elastic::EnterpriseSearch::WorkplaceSearch::Client
