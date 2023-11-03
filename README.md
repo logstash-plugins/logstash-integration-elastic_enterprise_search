@@ -88,6 +88,16 @@ bin/plugin install --no-verify
 ```
 - Start Logstash and proceed to test the plugin
 
+### Thoubleshooting integration test failures
+Integration tests uses some certificates fixtures. These security artifacts has 1 year expiration, so time to time
+they would trigger errors due to bad certificate.
+To regenerate use: 
+```sh
+> cd spec/fixture/certificates
+> ./generate.sh
+```
+Re-run locally the integration tests (with Docker scripts) and if it's green again create a PR to update.
+
 ## Contributing
 
 All contributions are welcome: ideas, patches, documentation, bug reports, complaints, and even something you drew up on a napkin.
