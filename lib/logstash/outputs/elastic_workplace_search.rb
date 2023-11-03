@@ -96,8 +96,8 @@ class LogStash::Outputs::ElasticWorkplaceSearch < LogStash::Outputs::Base
     docs_per_source
   end
 
-  def index(docs_partioned_by_source)
-    docs_partioned_by_source.each do |resolved_source, documents|
+  def index(docs_partitioned_by_source)
+    docs_partitioned_by_source.each do |resolved_source, documents|
       begin
         raise "Cannot resolve source field name #{@source} from event" unless resolved?(resolved_source)
 

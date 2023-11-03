@@ -104,8 +104,8 @@ class LogStash::Outputs::ElasticAppSearch < LogStash::Outputs::Base
     docs_for_engine
   end
 
-  def index(batch)
-    batch.each do |resolved_engine, documents|
+  def index(docs_partitioned_by_engine)
+    docs_partitioned_by_engine.each do |resolved_engine, documents|
       begin
         if resolved_engine =~ ENGINE_WITH_SPRINTF_REGEX || resolved_engine =~ /^\s*$/
           raise "Cannot resolve engine field name #{@engine} from event"
