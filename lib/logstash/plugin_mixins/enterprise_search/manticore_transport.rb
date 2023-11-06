@@ -21,7 +21,7 @@ module LogStash::PluginMixins::EnterpriseSearch
         log: log,
         logger: logger,
         request_timeout: overall_timeout,
-        adapter: adapter,
+        adapter: @options[:adapter],
         transport_options: {
           request: { open_timeout: open_timeout }
         },
