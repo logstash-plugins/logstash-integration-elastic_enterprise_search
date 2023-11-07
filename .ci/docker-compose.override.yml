@@ -14,6 +14,8 @@ services:
       - DISTRIBUTION_SUFFIX=${DISTRIBUTION_SUFFIX}
       - INTEGRATION=${INTEGRATION:-false}
       - SECURE_INTEGRATION=${SECURE_INTEGRATION:-false}
+    depends_on:
+      - enterprise_search
 
   elasticsearch:
     build:
@@ -37,8 +39,7 @@ services:
         soft: -1
         hard: -1
     ports:
-      - 9200:9200
-#    networks: ['stack']
+      - "9200:9200"
 
   enterprise_search:
     build:
@@ -54,6 +55,12 @@ services:
       - ENT_SEARCH_DEFAULT_PASSWORD=password
       - secret_management.encryption_keys=[changeme]
       - allow_es_settings_modification=true
+      - ent_search.ssl.enabled=${SECURE_INTEGRATION:-false}
+      - ent_search.ssl.keystore.path=/certificates/root_keystore.jks
+      - ent_search.ssl.keystore.password=changeme
+    volumes:
+      - ../spec/fixtures/certificates:/certificates
     ports:
-      - 3002:3002
-
+      - "3002:3002"
+    depends_on:
+      - elasticsearch

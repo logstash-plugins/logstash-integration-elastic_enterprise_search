@@ -16,6 +16,8 @@ ENV DISTRIBUTION=$DISTRIBUTION
 # INTEGRATION="true" while integration testing (false-y by default)
 ARG INTEGRATION
 ENV INTEGRATION=$INTEGRATION
+ARG SECURE_INTEGRATION
+ENV SECURE_INTEGRATION=$SECURE_INTEGRATION
 RUN gem install bundler -v '< 2'
 WORKDIR /usr/share/plugins/plugin
 RUN bundle install --with test ci

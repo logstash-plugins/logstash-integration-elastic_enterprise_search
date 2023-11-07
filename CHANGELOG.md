@@ -1,3 +1,10 @@
+## 3.0.0
+ - Bumped Enterprise Search clients to version `>= 7.16`, `< 9` [#18](https://github.com/logstash-plugins/logstash-integration-elastic_enterprise_search/pull/18)
+ - Added support to SSL configurations (`ssl_certificate_authorities`, `ssl_truststore_path`, `ssl_truststore_password`, `ssl_truststore_type`, `ssl_verification_mode`, `ssl_supported_protocols` and `ssl_cipher_suites`)
+ - [BREAKING] Swiftype endpoints are no longer supported for both plugins App Search and Workplace Search
+   - The App Search deprecated options `host` and `path` were removed
+ - Fixed the sprintf format support for the Workplace Search `source` configuration
+
 ## 2.2.1
  - Fix, change implementation of connectivity check method to be compatible with version `v8.0+` of Workplace Search [#16](https://github.com/logstash-plugins/logstash-integration-elastic_enterprise_search/pull/16) 
 
