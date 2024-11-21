@@ -45,7 +45,7 @@ module LogStash::PluginMixins::EnterpriseSearch
 
     def transport_klass
       case Elasticsearch::Transport::VERSION
-      when /7\.1[123]/
+      when /^7\.1[123]/
         Elasticsearch::Client
       else
         Elasticsearch::Transport::Client
