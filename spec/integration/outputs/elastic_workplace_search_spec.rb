@@ -153,7 +153,7 @@ describe 'indexing against running Workplace Search', :integration => true do
     end
 
     client = faraday_client
-    client.basic_auth(username, password)
+    client.headers['Authorization'] = "Basic #{basic_auth_header}"
     response = client.post('/ws/org/api_tokens',
                            '{"name":"ls-integration-test-key"}',
                            { 'Content-Type' => 'application/json', 'Accept' => 'application/json' })
