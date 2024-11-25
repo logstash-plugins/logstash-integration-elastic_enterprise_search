@@ -2,6 +2,8 @@ import:
 - logstash-plugins/.ci:travis/travis.yml@1.x
 
 jobs:
+  exclude: # enterprise search will be eol in 9.0 so excluding main testing
+    - env: SNAPSHOT=true ELASTIC_STACK_VERSION=main DOCKER_ENV=dockerjdk21.env
   include:
     - stage: "Integration Tests"
       env: INTEGRATION=true DISTRIBUTION=default ELASTIC_STACK_VERSION=7.current 
@@ -12,7 +14,7 @@ jobs:
     - env: INTEGRATION=true DISTRIBUTION=default DOCKER_ENV=dockerjdk21.env SNAPSHOT=true ELASTIC_STACK_VERSION=8.current
     - env: INTEGRATION=true DISTRIBUTION=default DOCKER_ENV=dockerjdk21.env SNAPSHOT=true ELASTIC_STACK_VERSION=8.next
     - env: INTEGRATION=true DISTRIBUTION=default DOCKER_ENV=dockerjdk21.env SNAPSHOT=true ELASTIC_STACK_VERSION=8.future
-    - env: INTEGRATION=true DISTRIBUTION=default DOCKER_ENV=dockerjdk21.env SNAPSHOT=true ELASTIC_STACK_VERSION=main
+    #- env: INTEGRATION=true DISTRIBUTION=default DOCKER_ENV=dockerjdk21.env SNAPSHOT=true ELASTIC_STACK_VERSION=main
     - stage: "Secure Integration Tests"
       env: SECURE_INTEGRATION=true DISTRIBUTION=default ELASTIC_STACK_VERSION=7.current 
     - env: SECURE_INTEGRATION=true DISTRIBUTION=default ELASTIC_STACK_VERSION=7.current SNAPSHOT=true 
