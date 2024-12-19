@@ -1,5 +1,6 @@
 # encoding: utf-8
 require 'logstash/outputs/base'
+require 'logstash/plugin_mixins/deprecation_logger_support'
 require 'logstash/plugin_mixins/enterprise_search/ssl_configs'
 require 'logstash/plugin_mixins/enterprise_search/client'
 
@@ -44,6 +45,12 @@ class LogStash::Outputs::ElasticAppSearch < LogStash::Outputs::Base
   ENGINE_WITH_SPRINTF_REGEX = /^.*%\{.+\}.*$/.freeze
 
   def register
+    log_message = "The App Search product is deprecated as of version 9 of the Elastic Stack. " +
+      "It will only receive security updates. " +
+      "We recommend transitioning to our native Elasticsearch tools. " +
+      "For more details, please visit https://www.elastic.co/guide/en/enterprise-search/current/app-search-workplace-search.html"
+    @deprecation_logger.deprecated log_message
+
     @retry_disabled = false
     @client = LogStash::PluginMixins::EnterpriseSearch::AppSearch::Client.new(client_options, params: params)
     check_connection!
