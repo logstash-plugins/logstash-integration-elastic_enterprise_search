@@ -7,6 +7,7 @@ require 'logstash/plugin_mixins/enterprise_search/ssl_configs'
 class LogStash::Outputs::ElasticWorkplaceSearch < LogStash::Outputs::Base
 
   include LogStash::PluginMixins::EnterpriseSearch::SSLConfigs
+  include LogStash::PluginMixins::DeprecationLoggerSupport
 
   config_name 'elastic_workplace_search'
 
@@ -48,7 +49,7 @@ class LogStash::Outputs::ElasticWorkplaceSearch < LogStash::Outputs::Base
       "This plugin is deprecated and will only receive security updates and critical bug fixes. " +
       "We recommend transitioning to our native Elasticsearch tools. " +
       "For more details, please visit https://www.elastic.co/guide/en/enterprise-search/current/app-search-workplace-search.html"
-    @deprecation_logger.deprecated log_message
+    deprecation_logger.deprecated log_message
 
     @retry_disabled = false
     @client = LogStash::PluginMixins::EnterpriseSearch::WorkplaceSearch::Client.new(client_options, params: params)
