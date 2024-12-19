@@ -45,8 +45,8 @@ class LogStash::Outputs::ElasticAppSearch < LogStash::Outputs::Base
   ENGINE_WITH_SPRINTF_REGEX = /^.*%\{.+\}.*$/.freeze
 
   def register
-    log_message = "The App Search product is deprecated as of version 9 of the Elastic Stack. " +
-      "It will only receive security updates. " +
+    log_message = "The App Search product is deprecated and excluded from the version 9 of the Elastic Stack. " +
+      "This plugin is deprecated and will only receive security updates and critical bug fixes. " +
       "We recommend transitioning to our native Elasticsearch tools. " +
       "For more details, please visit https://www.elastic.co/guide/en/enterprise-search/current/app-search-workplace-search.html"
     @deprecation_logger.deprecated log_message
