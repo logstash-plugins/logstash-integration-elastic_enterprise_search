@@ -45,10 +45,10 @@ class LogStash::Outputs::ElasticWorkplaceSearch < LogStash::Outputs::Base
   SOURCE_WITH_SPRINTF_REGEX = /^.*%\{.+\}.*$/.freeze
 
   def register
-    log_message = "The Workplace Search product is deprecated and excluded from the version 9 of the Elastic Stack. " +
+    log_message = "The Workplace Search product is deprecated and not supported from version 9 of the Elastic Stack. " +
       "The Elastic Workplace Search output plugin is deprecated and will only receive security updates and critical bug fixes. " +
-      "We recommend transitioning to our native Elasticsearch tools. " +
-      "For more details, please visit https://www.elastic.co/guide/en/enterprise-search/current/app-search-workplace-search.html"
+      "Please migrate to the Elastic Connector for continued support. " +
+      "For more details, please visit https://www.elastic.co/guide/en/search-ui/current/tutorials-elasticsearch.html"
     deprecation_logger.deprecated log_message
 
     @retry_disabled = false
