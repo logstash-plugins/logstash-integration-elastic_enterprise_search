@@ -48,7 +48,7 @@ class LogStash::Outputs::ElasticAppSearch < LogStash::Outputs::Base
   def register
     log_message = "The App Search product is deprecated and not supported from version 9 of the Elastic Stack. " +
       "The Elastic App Search output plugin is deprecated and will only receive security updates and critical bug fixes. " +
-      "We recommend transitioning to our native Elasticsearch tools. " +
+      "Please migrate to the Elasticsearch Connector for continued support." +
       "For more details, please visit https://www.elastic.co/guide/en/enterprise-search/current/app-search-workplace-search.html"
     deprecation_logger.deprecated log_message
 
