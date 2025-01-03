@@ -1,3 +1,6 @@
+## 3.0.1
+ - Add deprecation log for App Search and Workplace Search. Both products are removed from Elastic Stack in version 9 [#22](https://github.com/logstash-plugins/logstash-integration-elastic_enterprise_search/pull/22)
+
 ## 3.0.0
  - Bumped Enterprise Search clients to version `>= 7.16`, `< 9` [#18](https://github.com/logstash-plugins/logstash-integration-elastic_enterprise_search/pull/18)
  - Added support to SSL configurations (`ssl_certificate_authorities`, `ssl_truststore_path`, `ssl_truststore_password`, `ssl_truststore_type`, `ssl_verification_mode`, `ssl_supported_protocols` and `ssl_cipher_suites`)
