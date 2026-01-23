@@ -46,7 +46,8 @@ services:
       context: ../
       dockerfile: .ci/Dockerfile.enterprise_search
       args:
-        - ELASTIC_ENTERPRISE_SEARCH_VERSION=$ELASTIC_STACK_VERSION
+        # Elastic Enterprise Search docker image not anymore updated for 9.x versions, last is 8.19.x
+        - ELASTIC_ENTERPRISE_SEARCH_VERSION=8.19.10
         - DISTRIBUTION_SUFFIX=${DISTRIBUTION_SUFFIX}
     environment:
       - elasticsearch.host=http://elasticsearch:9200
