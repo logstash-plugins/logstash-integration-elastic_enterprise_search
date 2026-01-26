@@ -1,5 +1,3 @@
-## 3.1.0
- - Removed support for Elastic Stack 7.x [#23](https://github.com/logstash-plugins/logstash-integration-elastic_enterprise_search/pull/23)
 ## 3.0.1
  - Add deprecation log for App Search and Workplace Search. Both products are removed from Elastic Stack in version 9 [#22](https://github.com/logstash-plugins/logstash-integration-elastic_enterprise_search/pull/22)
 

@@ -46,8 +46,6 @@ services:
       context: ../
       dockerfile: .ci/Dockerfile.enterprise_search
       args:
-        # Elastic Enterprise Search docker image not anymore updated for 9.x versions, last is 8.19.x
-#        - ELASTIC_ENTERPRISE_SEARCH_VERSION=8.19.10
         - ELASTIC_ENTERPRISE_SEARCH_VERSION=$ELASTIC_STACK_VERSION
         - DISTRIBUTION_SUFFIX=${DISTRIBUTION_SUFFIX}
     environment:
