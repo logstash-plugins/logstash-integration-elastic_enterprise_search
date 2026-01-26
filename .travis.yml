@@ -4,6 +4,12 @@ import:
 jobs:
   exclude: # enterprise search will be eol in 9.0 so excluding main testing
     - env: SNAPSHOT=true ELASTIC_STACK_VERSION=main DOCKER_ENV=dockerjdk21.env
+    - env: SNAPSHOT=true ELASTIC_STACK_VERSION=9.previous DOCKER_ENV=dockerjdk21.env
+    - env: SNAPSHOT=true ELASTIC_STACK_VERSION=9.current DOCKER_ENV=dockerjdk21.env
+    - env: SNAPSHOT=true ELASTIC_STACK_VERSION=9.next DOCKER_ENV=dockerjdk21.env
+    - env: ELASTIC_STACK_VERSION=9.previous DOCKER_ENV=dockerjdk21.env
+    - env: ELASTIC_STACK_VERSION=9.current DOCKER_ENV=dockerjdk21.env
+    - env: ELASTIC_STACK_VERSION=9.next DOCKER_ENV=dockerjdk21.env
   include:
     - stage: "Integration Tests"
     - env: INTEGRATION=true DISTRIBUTION=default DOCKER_ENV=dockerjdk21.env ELASTIC_STACK_VERSION=8.previous  
