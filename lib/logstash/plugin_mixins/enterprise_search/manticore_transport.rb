@@ -44,11 +44,15 @@ module LogStash::PluginMixins::EnterpriseSearch
     end
 
     def transport_klass
-      case Elasticsearch::Transport::VERSION
-      when /^7\.1[123]/
-        Elasticsearch::Client
+      if ManticoreTransport.eps_version_7?
+        case Elasticsearch::Transport::VERSION
+        when /^7\.1[123]/
+          Elasticsearch::Client
+        else
+          Elasticsearch::Transport::Client
+        end
       else
-        Elasticsearch::Transport::Client
+        Elastic::Transport::Client
       end
     end
 
