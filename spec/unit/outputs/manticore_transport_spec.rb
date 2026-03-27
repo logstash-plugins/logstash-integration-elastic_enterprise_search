@@ -29,7 +29,7 @@ describe LogStash::PluginMixins::EnterpriseSearch::ManticoreTransport do
 
         result = client.transport
 
-        if LogStash::PluginMixins::EnterpriseSearch::ManticoreTransport.eps_version_7?
+        if LogStash::PluginMixins::EnterpriseSearch::ManticoreTransport.use_legacy_transport?
           expect(result.transport).to be_a(Elasticsearch::Transport::Transport::HTTP::Manticore)
         else
           expect(result.transport).to be_a(Elastic::Transport::Transport::HTTP::Manticore)
