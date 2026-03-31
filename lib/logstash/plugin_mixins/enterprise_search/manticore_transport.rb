@@ -4,14 +4,29 @@ module LogStash::PluginMixins::EnterpriseSearch
   # It also provides common Manticore configurations such as :ssl.
   module ManticoreTransport
     def self.included(base)
-      if eps_version_7?
-        require 'elasticsearch/transport/transport/http/manticore'
-      else
-        require 'elastic/transport/transport/http/manticore'
-      end
+      load_transport!
 
       raise ArgumentError, "`#{base}` must inherit Elastic::EnterpriseSearch::Client" unless base < Elastic::EnterpriseSearch::Client
       raise ArgumentError, "`#{base}` must respond to :params" unless base.instance_methods.include? :params
+    end
+
+    # `elasticsearch-transport` is old, `elastic-transport` is the replacement.
+    # LS-core updated `elasticsearch` > 8: https://github.com/elastic/logstash/pull/17161
+    # Following logic supports both `elasticsearch-transport` and `elastic-transport` gems.
+    def self.load_transport!
+      return if @transport_loaded
+      begin
+        require 'elasticsearch/transport/transport/http/manticore'
+        @use_legacy_transport = true
+      rescue LoadError
+        require 'elastic/transport/transport/http/manticore'
+        @use_legacy_transport = false
+      end
+      @transport_loaded = true
+    end
+
+    def self.use_legacy_transport?
+      @use_legacy_transport
     end
 
     # overrides Elastic::EnterpriseSearch::Client#transport
@@ -33,24 +48,15 @@ module LogStash::PluginMixins::EnterpriseSearch
       )
     end
 
-    def self.eps_version_7?
-      Elastic::EnterpriseSearch::VERSION.start_with?('7')
-    end
-
     private
 
     def manticore_transport_klass
-      ManticoreTransport.eps_version_7? ? Elasticsearch::Transport::Transport::HTTP::Manticore : Elastic::Transport::Transport::HTTP::Manticore
+      ManticoreTransport.use_legacy_transport? ? Elasticsearch::Transport::Transport::HTTP::Manticore : Elastic::Transport::Transport::HTTP::Manticore
     end
 
     def transport_klass
-      if ManticoreTransport.eps_version_7?
-        case Elasticsearch::Transport::VERSION
-        when /^7\.1[123]/
-          Elasticsearch::Client
-        else
-          Elasticsearch::Transport::Client
-        end
+      if ManticoreTransport.use_legacy_transport?
+        Elasticsearch::Transport::Client
       else
         Elastic::Transport::Client
       end

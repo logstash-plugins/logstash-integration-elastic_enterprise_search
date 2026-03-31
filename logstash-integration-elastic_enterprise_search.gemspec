@@ -1,13 +1,13 @@
 Gem::Specification.new do |s|
   s.name          = 'logstash-integration-elastic_enterprise_search'
-  s.version         = '3.0.1'
+  s.version         = '3.0.2'
   s.licenses        = ['Apache-2.0']
   s.summary         = "Integration with Elastic Enterprise Search - output plugins"
   s.description     = "This gem is a Logstash plugin required to be installed on top of the Logstash core pipeline "+
                       "using $LS_HOME/bin/logstash-plugin install gemname. This gem is not a stand-alone program."
   s.authors         = ["Elastic"]
   s.email           = 'info@elastic.co'
-  s.homepage        = "http://www.elastic.co/guide/en/logstash/current/index.html"
+  s.homepage        = "https://www.elastic.co/logstash"
   s.require_paths   = ['lib', 'vendor/jar-dependencies']
 
   # Files
@@ -27,7 +27,8 @@ Gem::Specification.new do |s|
   s.add_runtime_dependency "manticore", '~> 0.8'
   s.add_runtime_dependency "logstash-core-plugin-api", "~> 2.0"
   s.add_runtime_dependency "logstash-codec-plain"
-  s.add_runtime_dependency 'elastic-enterprise-search', '>= 7.16', '< 9'
+  # elastic-enterprise-search v9 not released yet
+  s.add_runtime_dependency 'elastic-enterprise-search', '~> 8.0'
   s.add_runtime_dependency "logstash-mixin-deprecation_logger_support", '~>1.0'
   s.add_development_dependency "logstash-devutils"
 end

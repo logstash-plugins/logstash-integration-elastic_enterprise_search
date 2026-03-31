@@ -1,3 +1,6 @@
+## 3.0.2
+  - Upgrades `elastic-enterprise-search` gem and tolerates `Elastic::Transport` client [#26](https://github.com/logstash-plugins/logstash-integration-elastic_enterprise_search/pull/26)
+
 ## 3.0.1
  - Add deprecation log for App Search and Workplace Search. Both products are removed from Elastic Stack in version 9 [#22](https://github.com/logstash-plugins/logstash-integration-elastic_enterprise_search/pull/22)
 
