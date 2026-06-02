@@ -27,8 +27,8 @@ Gem::Specification.new do |s|
   s.add_runtime_dependency "manticore", '~> 0.8'
   s.add_runtime_dependency "logstash-core-plugin-api", "~> 2.0"
   s.add_runtime_dependency "logstash-codec-plain"
-  # elastic-enterprise-search v9 not released yet
-  s.add_runtime_dependency 'elastic-enterprise-search', '~> 8.0'
+  # elastic-enterprise-search is deprecated in v9 and gem for v9 is not released yet
+  s.add_runtime_dependency 'elastic-enterprise-search', '>= 8.19', '< 9'
   s.add_runtime_dependency "logstash-mixin-deprecation_logger_support", '~>1.0'
   s.add_development_dependency "logstash-devutils"
 end
