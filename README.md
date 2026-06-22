@@ -1,7 +1,9 @@
 # logstash-integration-elastic_enterprise_search
 
 
-[![Travis Build Status](https://travis-ci.com/logstash-plugins/logstash-output-example.svg)](https://travis-ci.com/logstash-plugins/logstash-output-example)
+[![Unit Tests](https://github.com/logstash-plugins/logstash-integration-elastic_enterprise_search/actions/workflows/unit-tests.yml/badge.svg?branch=main)](https://github.com/logstash-plugins/logstash-integration-elastic_enterprise_search/actions/workflows/unit-tests.yml)
+[![Integration Tests](https://github.com/logstash-plugins/logstash-integration-elastic_enterprise_search/actions/workflows/integration-tests.yml/badge.svg?branch=main)](https://github.com/logstash-plugins/logstash-integration-elastic_enterprise_search/actions/workflows/integration-tests.yml)
+[![Secure Integration Tests](https://github.com/logstash-plugins/logstash-integration-elastic_enterprise_search/actions/workflows/secure-integration-tests.yml/badge.svg?branch=main)](https://github.com/logstash-plugins/logstash-integration-elastic_enterprise_search/actions/workflows/secure-integration-tests.yml)
 
 This is a plugin for [Logstash](https://github.com/elastic/logstash).
 
